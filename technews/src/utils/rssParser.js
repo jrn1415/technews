@@ -1,16 +1,71 @@
-import { PROXY_URLS, FEED_LIMITS } from './constants';
+import { PROXY_URLS, FEED_LIMITS, API_ENDPOINTS, USE_EDGE_API } from './constants';
 import { generateId, calculateReadTime, stripHtml, truncateText } from './helpers';
+
+// =====================================================
+// NEW: Edge API Method (Recommended - Fast with Cache)
+// =====================================================
+
+/**
+ * Fetch all feeds from Edge API with server-side caching
+ * @param {Array} feeds - Array of feed objects (used for filtering by enabled)
+ * @param {Object} options - Options { forceRefresh, category }
+ * @returns {Promise<Array>} - Array of articles
+ */
+export async function fetchAllFeedsFromAPI(feeds, options = {}) {
+  const { forceRefresh = false, category = null } = options;
+
+  try {
+    const params = new URLSearchParams();
+    if (forceRefresh) params.append('refresh', 'true');
+    if (category && category !== 'all') params.append('category', category);
+
+    const url = `${API_ENDPOINTS.feeds}${params.toString() ? `?${params.toString()}` : ''}`;
+
+    const response = await fetch(url, {
+      method: 'GET',
+      headers: {
+        'Accept': 'application/json',
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error(`API error: ${response.status}`);
+    }
+
+    const data = await response.json();
+
+    // Log cache status for debugging
+    if (import.meta.env.DEV) {
+      console.log(`[RSS API] Source: ${data.source}, Articles: ${data.articles?.length}, Cached: ${data.cachedAt}`);
+    }
+
+    // Filter by enabled feeds (client-side)
+    const enabledFeedIds = feeds.filter(f => f.enabled).map(f => f.id);
+    const filteredArticles = data.articles.filter(
+      article => enabledFeedIds.includes(article.source.id)
+    );
+
+    return filteredArticles;
+  } catch (error) {
+    console.error('Edge API fetch failed:', error);
+    throw error;
+  }
+}
+
+// =====================================================
+// OLD: Proxy Method (Fallback)
+// =====================================================
 
 // ตรวจสอบว่าข่าวเก่าเกินไปหรือไม่
 function isArticleTooOld(pubDate) {
   const articleDate = new Date(pubDate);
   const now = new Date();
-  const maxAge = FEED_LIMITS.maxAgeDays * 24 * 60 * 60 * 1000; // แปลงเป็น milliseconds
+  const maxAge = FEED_LIMITS.maxAgeDays * 24 * 60 * 60 * 1000;
   return now - articleDate > maxAge;
 }
 
 // Timeout wrapper for fetch
-const FETCH_TIMEOUT = 5000; // 5 seconds
+const FETCH_TIMEOUT = 5000;
 
 async function fetchWithTimeout(url, timeout = FETCH_TIMEOUT) {
   const controller = new AbortController();
@@ -29,7 +84,7 @@ async function fetchWithTimeout(url, timeout = FETCH_TIMEOUT) {
   }
 }
 
-// Fetch RSS feed via proxy
+// Fetch RSS feed via proxy (old method)
 export async function fetchFeed(feedUrl, feedInfo) {
   const proxyUrl = `${PROXY_URLS.primary}${encodeURIComponent(feedUrl)}`;
 
@@ -71,13 +126,11 @@ function parseXML(xmlString, feedInfo) {
   const parser = new DOMParser();
   const doc = parser.parseFromString(xmlString, 'text/xml');
 
-  // Check for parse errors
   const parseError = doc.querySelector('parsererror');
   if (parseError) {
     throw new Error('Failed to parse XML');
   }
 
-  // Handle both RSS and Atom formats
   const items = doc.querySelectorAll('item, entry');
 
   return Array.from(items).map((item) => {
@@ -107,7 +160,6 @@ function parseXML(xmlString, feedInfo) {
   });
 }
 
-// Get text content from element
 function getTextContent(parent, selectors) {
   const selectorList = selectors.split(', ');
 
@@ -121,21 +173,16 @@ function getTextContent(parent, selectors) {
   return '';
 }
 
-// Get link from item (handles different formats)
 function getLink(item) {
-  // Try standard link element
   const linkEl = item.querySelector('link');
   if (linkEl) {
-    // Atom format uses href attribute
     const href = linkEl.getAttribute('href');
     if (href) return href;
 
-    // RSS format uses text content
     const text = linkEl.textContent?.trim();
     if (text) return text;
   }
 
-  // Try guid as fallback
   const guid = item.querySelector('guid');
   if (guid && guid.textContent?.startsWith('http')) {
     return guid.textContent.trim();
@@ -144,21 +191,17 @@ function getLink(item) {
   return '';
 }
 
-// Get content from item
 function getContent(item) {
-  // Try content:encoded first (common in RSS)
   const contentEncoded = item.querySelector('content\\:encoded, encoded');
   if (contentEncoded) {
     return contentEncoded.textContent?.trim() || '';
   }
 
-  // Try content element (Atom)
   const content = item.querySelector('content');
   if (content) {
     return content.textContent?.trim() || '';
   }
 
-  // Fall back to description
   const description = item.querySelector('description');
   if (description) {
     return description.textContent?.trim() || '';
@@ -167,8 +210,8 @@ function getContent(item) {
   return '';
 }
 
-// Fetch all enabled feeds and combine articles
-export async function fetchAllFeeds(feeds) {
+// Fetch all enabled feeds via proxy (old method)
+export async function fetchAllFeedsViaProxy(feeds) {
   const enabledFeeds = feeds.filter((feed) => feed.enabled);
 
   const results = await Promise.allSettled(
@@ -183,9 +226,8 @@ export async function fetchAllFeeds(feeds) {
     }
   });
 
-  // Sort by date (newest first), filter old articles, and remove duplicates
   const uniqueArticles = articles
-    .filter((article) => !isArticleTooOld(article.pubDate)) // กรองข่าวเก่าเกิน 7 วัน
+    .filter((article) => !isArticleTooOld(article.pubDate))
     .sort((a, b) => new Date(b.pubDate) - new Date(a.pubDate))
     .filter(
       (article, index, self) =>
@@ -195,7 +237,30 @@ export async function fetchAllFeeds(feeds) {
   return uniqueArticles;
 }
 
-// Validate a feed URL by attempting to fetch it
+// =====================================================
+// MAIN: Export unified function
+// =====================================================
+
+/**
+ * Fetch all feeds - automatically chooses best method
+ * Uses Edge API by default, falls back to proxy on failure
+ */
+export async function fetchAllFeeds(feeds, options = {}) {
+  if (USE_EDGE_API) {
+    try {
+      return await fetchAllFeedsFromAPI(feeds, options);
+    } catch (apiError) {
+      console.warn('Edge API failed, falling back to proxy:', apiError.message);
+      // Fallback to proxy method
+      return await fetchAllFeedsViaProxy(feeds);
+    }
+  }
+
+  // Use old proxy method
+  return await fetchAllFeedsViaProxy(feeds);
+}
+
+// Validate a feed URL
 export async function validateFeed(feedUrl) {
   try {
     const proxyUrl = `${PROXY_URLS.primary}${encodeURIComponent(feedUrl)}`;
@@ -209,19 +274,16 @@ export async function validateFeed(feedUrl) {
     const parser = new DOMParser();
     const doc = parser.parseFromString(data.contents, 'text/xml');
 
-    // Check for parse errors
     const parseError = doc.querySelector('parsererror');
     if (parseError) {
       return { valid: false, error: 'Invalid XML format' };
     }
 
-    // Check for RSS/Atom items
     const items = doc.querySelectorAll('item, entry');
     if (items.length === 0) {
       return { valid: false, error: 'No articles found in feed' };
     }
 
-    // Get feed title
     const feedTitle =
       doc.querySelector('channel > title, feed > title')?.textContent?.trim() ||
       'Unknown Feed';

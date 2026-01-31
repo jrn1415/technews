@@ -1,8 +1,16 @@
-// API Proxy URLs for CORS
+// API Proxy URLs for CORS (fallback only)
 export const PROXY_URLS = {
   primary: 'https://api.allorigins.win/get?url=',
   fallback: 'https://corsproxy.io/?'
 };
+
+// Vercel Edge API endpoint
+export const API_ENDPOINTS = {
+  feeds: '/api/feeds'
+};
+
+// Use Edge API (set to false to use old proxy method)
+export const USE_EDGE_API = true;
 
 // Local Storage Keys
 export const STORAGE_KEYS = {
