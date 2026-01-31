@@ -6,19 +6,28 @@ export const config = {
 
 // RSS Feed sources
 const RSS_FEEDS = [
+  // Thai Feeds
+  {
+    id: 'droidsans',
+    name: 'DroidSans',
+    url: 'https://droidsans.com/feed/',
+    category: 'tech',
+    icon: '📱',
+  },
+  {
+    id: 'techtalkthai',
+    name: 'TechTalkThai',
+    url: 'https://www.techtalkthai.com/feed/',
+    category: 'tech',
+    icon: '🏢',
+  },
+  // International Feeds
   {
     id: 'theverge',
     name: 'The Verge',
     url: 'https://www.theverge.com/rss/index.xml',
     category: 'tech',
     icon: '🌐',
-  },
-  {
-    id: 'techcrunch',
-    name: 'TechCrunch',
-    url: 'https://techcrunch.com/feed/',
-    category: 'tech',
-    icon: '💻',
   },
   {
     id: 'hackernews',
@@ -28,9 +37,9 @@ const RSS_FEEDS = [
     icon: '🔶',
   },
   {
-    id: 'openai-blog',
-    name: 'OpenAI Blog',
-    url: 'https://openai.com/blog/rss.xml',
+    id: 'openai-news',
+    name: 'OpenAI News',
+    url: 'https://openai.com/news/rss.xml',
     category: 'ai',
     icon: '🤖',
   },
@@ -40,6 +49,13 @@ const RSS_FEEDS = [
     url: 'https://krebsonsecurity.com/feed/',
     category: 'security',
     icon: '🔒',
+  },
+  {
+    id: 'bleepingcomputer',
+    name: 'BleepingComputer',
+    url: 'https://www.bleepingcomputer.com/feed/',
+    category: 'security',
+    icon: '🖥️',
   },
   {
     id: 'schneier',
@@ -54,6 +70,13 @@ const RSS_FEEDS = [
     url: 'https://venturebeat.com/category/ai/feed/',
     category: 'ai',
     icon: '🧠',
+  },
+  {
+    id: 'techcrunch-ai',
+    name: 'TechCrunch AI',
+    url: 'https://techcrunch.com/category/artificial-intelligence/feed/',
+    category: 'ai',
+    icon: '🤖',
   },
 ];
 

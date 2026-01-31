@@ -260,8 +260,27 @@ export async function fetchAllFeeds(feeds, options = {}) {
   return await fetchAllFeedsViaProxy(feeds);
 }
 
-// Validate a feed URL
+// Validate a feed URL using Edge API
 export async function validateFeed(feedUrl) {
+  try {
+    // Use Edge API to validate (bypasses CORS issues)
+    const response = await fetch(`/api/feeds/validate?url=${encodeURIComponent(feedUrl)}`);
+
+    if (!response.ok) {
+      // Fallback to proxy method if Edge API not available
+      return await validateFeedViaProxy(feedUrl);
+    }
+
+    const result = await response.json();
+    return result;
+  } catch (error) {
+    // Fallback to proxy method
+    return await validateFeedViaProxy(feedUrl);
+  }
+}
+
+// Fallback: Validate via CORS proxy
+async function validateFeedViaProxy(feedUrl) {
   try {
     const proxyUrl = `${PROXY_URLS.primary}${encodeURIComponent(feedUrl)}`;
     const response = await fetch(proxyUrl);
