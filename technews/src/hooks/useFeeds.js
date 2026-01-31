@@ -22,7 +22,8 @@ export function useFeeds() {
   const previousArticleCount = useRef(0);
 
   // Fetch feeds function
-  const fetchFeeds = useCallback(async (isAutoRefresh = false) => {
+  // forceRefresh = true จะ bypass server cache (สำหรับ Pull to Refresh)
+  const fetchFeeds = useCallback(async (isAutoRefresh = false, forceRefresh = false) => {
     // Don't show loading indicator for auto-refresh
     if (!isAutoRefresh) {
       setLoading(true);
@@ -38,7 +39,7 @@ export function useFeeds() {
         return { newCount: 0 };
       }
 
-      const fetchedArticles = await fetchAllFeeds(enabledFeeds);
+      const fetchedArticles = await fetchAllFeeds(enabledFeeds, { forceRefresh });
 
       // Calculate new articles count for notifications
       const newCount = isAutoRefresh
@@ -73,9 +74,9 @@ export function useFeeds() {
     }
   }, [articles, getEnabledFeeds, setArticles, setError, setLastUpdated, setLoading]);
 
-  // Manual refresh function
+  // Manual refresh function (Pull to Refresh) - bypass server cache
   const refresh = useCallback(() => {
-    return fetchFeeds(false);
+    return fetchFeeds(false, true); // forceRefresh = true
   }, [fetchFeeds]);
 
   // Load cached articles on mount, then refresh in background
