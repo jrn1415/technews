@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { ArrowLeft, ExternalLink, Share2, Bookmark, Type } from 'lucide-react';
+import { ArrowLeft, ExternalLink, Share2, Bookmark, Type, Languages } from 'lucide-react';
 import { useStore } from '../../stores/useStore';
 import { formatDate, sanitizeHtml } from '../../utils/helpers';
 
@@ -60,6 +60,12 @@ export function ReaderView() {
 
   const handleOpenExternal = () => {
     window.open(selectedArticle.link, '_blank', 'noopener,noreferrer');
+  };
+
+  const handleTranslate = () => {
+    // Open Google Translate with the article URL
+    const translateUrl = `https://translate.google.com/translate?sl=auto&tl=th&u=${encodeURIComponent(selectedArticle.link)}`;
+    window.open(translateUrl, '_blank', 'noopener,noreferrer');
   };
 
   // Font size classes based on settings
@@ -139,6 +145,14 @@ export function ReaderView() {
               aria-label="Share article"
             >
               <Share2 size={20} />
+            </button>
+            <button
+              onClick={handleTranslate}
+              className="p-2 text-secondary-light dark:text-secondary-dark hover:text-primary-light dark:hover:text-primary-dark hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-colors"
+              aria-label="Translate to Thai"
+              title="แปลเป็นภาษาไทย"
+            >
+              <Languages size={20} />
             </button>
             <button
               onClick={handleOpenExternal}
