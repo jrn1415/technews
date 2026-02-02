@@ -7,30 +7,30 @@ export default defineConfig({
     react(),
     VitePWA({
       registerType: 'prompt',
-      includeAssets: ['favicon.svg', 'icons/*.svg'],
+      includeAssets: ['favicon.svg', 'icons/*.png', 'icons/*.svg'],
       manifest: {
         name: 'TechNews',
         short_name: 'TechNews',
         description: 'Your daily tech digest - RSS Reader for IT, AI, and Security news',
-        theme_color: '#3B82F6',
-        background_color: '#FAFAFA',
+        theme_color: '#1a1a2e',
+        background_color: '#1a1a2e',
         display: 'standalone',
         start_url: '/',
         icons: [
           {
-            src: '/icons/icon-192x192.svg',
+            src: '/icons/icon-192x192.png',
             sizes: '192x192',
-            type: 'image/svg+xml'
+            type: 'image/png'
           },
           {
-            src: '/icons/icon-512x512.svg',
+            src: '/icons/icon-512x512.png',
             sizes: '512x512',
-            type: 'image/svg+xml'
+            type: 'image/png'
           },
           {
-            src: '/icons/icon-512x512.svg',
+            src: '/icons/icon-512x512.png',
             sizes: '512x512',
-            type: 'image/svg+xml',
+            type: 'image/png',
             purpose: 'any maskable'
           }
         ]
