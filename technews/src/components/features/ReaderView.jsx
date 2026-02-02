@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { ArrowLeft, ExternalLink, Share2, Bookmark, Type, Languages } from 'lucide-react';
+import { ArrowLeft, ExternalLink, Share2, Bookmark, Type } from 'lucide-react';
 import { useStore } from '../../stores/useStore';
 import { formatDate, sanitizeHtml } from '../../utils/helpers';
 
@@ -59,11 +59,8 @@ export function ReaderView() {
   };
 
   const handleOpenExternal = () => {
-    window.open(selectedArticle.link, '_blank', 'noopener,noreferrer');
-  };
-
-  const handleTranslate = () => {
-    // Open Google Translate with the article URL
+    // Open via Google Translate (source: auto-detect, target: Thai)
+    // User sees original language first, can click to translate to Thai
     const translateUrl = `https://translate.google.com/translate?sl=auto&tl=th&u=${encodeURIComponent(selectedArticle.link)}`;
     window.open(translateUrl, '_blank', 'noopener,noreferrer');
   };
@@ -147,17 +144,10 @@ export function ReaderView() {
               <Share2 size={20} />
             </button>
             <button
-              onClick={handleTranslate}
-              className="p-2 text-secondary-light dark:text-secondary-dark hover:text-primary-light dark:hover:text-primary-dark hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-colors"
-              aria-label="Translate to Thai"
-              title="แปลเป็นภาษาไทย"
-            >
-              <Languages size={20} />
-            </button>
-            <button
               onClick={handleOpenExternal}
               className="p-2 text-secondary-light dark:text-secondary-dark hover:text-primary-light dark:hover:text-primary-dark hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-colors"
               aria-label="Open in browser"
+              title="เปิดในเบราว์เซอร์ (พร้อมแปลภาษา)"
             >
               <ExternalLink size={20} />
             </button>
@@ -208,7 +198,7 @@ export function ReaderView() {
         {/* Read more link */}
         <div className="mt-8 pt-6 border-t border-border-light dark:border-border-dark">
           <a
-            href={selectedArticle.link}
+            href={`https://translate.google.com/translate?sl=auto&tl=th&u=${encodeURIComponent(selectedArticle.link)}`}
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center gap-2 text-accent-light dark:text-accent-dark hover:underline font-medium"
