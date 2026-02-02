@@ -6,10 +6,8 @@
     </linearGradient>
   </defs>
   <rect width="512" height="512" rx="102" fill="url(#grad)"/>
-  <!-- RSS Signal Icon -->
-  <circle cx="160" cy="352" r="40" fill="white"/>
-  <path d="M160 272 C160 272 160 312 160 312" stroke="white" stroke-width="40" fill="none" stroke-linecap="round"/>
-  <path d="M160 232 Q160 312 240 312" stroke="white" stroke-width="40" fill="none" stroke-linecap="round"/>
-  <path d="M160 152 Q160 312 320 312" stroke="white" stroke-width="40" fill="none" stroke-linecap="round"/>
-  <path d="M160 72 Q160 312 400 312" stroke="white" stroke-width="40" fill="none" stroke-linecap="round"/>
+  <!-- Letter T -->
+  <text x="280" y="340" font-family="Georgia, serif" font-size="280" font-weight="bold" fill="white" text-anchor="middle">T</text>
+  <!-- Lightning Bolt -->
+  <polygon points="200,80 140,220 190,220 150,320 240,160 185,160" fill="#FACC15"/>
 </svg>
