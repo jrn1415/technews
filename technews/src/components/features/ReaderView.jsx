@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { ArrowLeft, ExternalLink, Share2, Bookmark, Type } from 'lucide-react';
+import { ArrowLeft, ExternalLink, Share2, Bookmark, Type, Globe } from 'lucide-react';
 import { useStore } from '../../stores/useStore';
 import { formatDate, sanitizeHtml } from '../../utils/helpers';
 
@@ -58,11 +58,15 @@ export function ReaderView() {
     }
   };
 
-  const handleOpenExternal = () => {
-    // Open via Google Translate without auto-translate
-    // Shows original language, user can manually translate if needed
-    const translateUrl = `https://translate.google.com/translate?u=${encodeURIComponent(selectedArticle.link)}`;
+  const handleTranslate = () => {
+    // Open via Google Translate - translate to Thai
+    const translateUrl = `https://translate.google.com/translate?sl=auto&tl=th&u=${encodeURIComponent(selectedArticle.link)}`;
     window.open(translateUrl, '_blank', 'noopener,noreferrer');
+  };
+
+  const handleOpenExternal = () => {
+    // Open original URL directly
+    window.open(selectedArticle.link, '_blank', 'noopener,noreferrer');
   };
 
   // Font size classes based on settings
@@ -144,10 +148,18 @@ export function ReaderView() {
               <Share2 size={20} />
             </button>
             <button
+              onClick={handleTranslate}
+              className="p-2 text-secondary-light dark:text-secondary-dark hover:text-primary-light dark:hover:text-primary-dark hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-colors"
+              aria-label="Translate to Thai"
+              title="แปลเป็นภาษาไทย"
+            >
+              <Globe size={20} />
+            </button>
+            <button
               onClick={handleOpenExternal}
               className="p-2 text-secondary-light dark:text-secondary-dark hover:text-primary-light dark:hover:text-primary-dark hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-colors"
               aria-label="Open in browser"
-              title="เปิดในเบราว์เซอร์ (พร้อมแปลภาษา)"
+              title="เปิดในเบราว์เซอร์"
             >
               <ExternalLink size={20} />
             </button>
@@ -198,7 +210,7 @@ export function ReaderView() {
         {/* Read more link */}
         <div className="mt-8 pt-6 border-t border-border-light dark:border-border-dark">
           <a
-            href={`https://translate.google.com/translate?u=${encodeURIComponent(selectedArticle.link)}`}
+            href={selectedArticle.link}
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center gap-2 text-accent-light dark:text-accent-dark hover:underline font-medium"
