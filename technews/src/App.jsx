@@ -1,7 +1,8 @@
 import { useState } from 'react';
 import { useStore } from './stores/useStore';
 import { useTheme } from './hooks/useTheme';
-import { Header, BottomNav, OfflineBanner } from './components/layout';
+import { useServiceWorker } from './hooks/useServiceWorker';
+import { Header, BottomNav, OfflineBanner, UpdatePrompt } from './components/layout';
 import {
   ArticleList,
   ArticleStats,
@@ -20,6 +21,9 @@ function App() {
 
   // Initialize theme
   useTheme();
+
+  // Service Worker update management
+  const { showUpdatePrompt, isUpdating, doUpdate, dismissUpdate } = useServiceWorker();
 
   // Render based on current state
   if (selectedArticle) {
@@ -53,6 +57,14 @@ function App() {
 
       {/* Install Guide Modal */}
       <InstallGuide isOpen={showInstallGuide} onClose={() => setShowInstallGuide(false)} />
+
+      {/* Update Prompt */}
+      <UpdatePrompt
+        show={showUpdatePrompt}
+        isUpdating={isUpdating}
+        onUpdate={doUpdate}
+        onDismiss={dismissUpdate}
+      />
     </div>
   );
 }

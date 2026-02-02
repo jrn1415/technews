@@ -183,5 +183,16 @@ export const en = {
       step3Desc: 'Tap the "Install" button to add the app to your device',
       note: 'Recommended to use Chrome or Samsung Internet for the best experience.'
     }
+  },
+
+  // Update Prompt
+  update: {
+    title: 'Update Available!',
+    subtitle: 'Ready to install',
+    description: 'A new version is available with new features and improvements. Update now for the best experience.',
+    now: 'Update Now',
+    later: 'Later',
+    updating: 'Updating...',
+    notification: 'New version available. Tap to update.'
   }
 };
