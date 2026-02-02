@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { useStore } from './stores/useStore';
 import { useTheme } from './hooks/useTheme';
 import { Header, BottomNav, OfflineBanner } from './components/layout';
@@ -7,12 +8,15 @@ import {
   BookmarksList,
   ReaderView,
   SourceList,
-  SettingsPanel
+  SettingsPanel,
+  InstallBanner,
+  InstallGuide
 } from './components/features';
 
 function App() {
   const activeTab = useStore((state) => state.activeTab);
   const selectedArticle = useStore((state) => state.selectedArticle);
+  const [showInstallGuide, setShowInstallGuide] = useState(false);
 
   // Initialize theme
   useTheme();
@@ -43,6 +47,12 @@ function App() {
 
         <BottomNav />
       </div>
+
+      {/* Install Banner (shows once for new users) */}
+      <InstallBanner onShowGuide={() => setShowInstallGuide(true)} />
+
+      {/* Install Guide Modal */}
+      <InstallGuide isOpen={showInstallGuide} onClose={() => setShowInstallGuide(false)} />
     </div>
   );
 }

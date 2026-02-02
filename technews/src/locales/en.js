@@ -151,5 +151,37 @@ export const en = {
     delete: 'Delete',
     confirm: 'Confirm',
     close: 'Close'
+  },
+
+  // Install Guide
+  install: {
+    title: 'Install TechNews',
+    description: 'Add to home screen for quick access',
+    howTo: 'How to Install',
+    later: 'Later',
+    guideTitle: 'Install App',
+    guideSubtitle: 'Add to Home Screen',
+    alreadyInstalled: 'App already installed!',
+    gotIt: 'Got It',
+    settingsTitle: 'Install App',
+    settingsDesc: 'Add icon to your home screen',
+    ios: {
+      step1Title: 'Tap the Share button',
+      step1Desc: 'Tap the Share button (square with arrow pointing up) at the bottom of Safari',
+      step2Title: 'Select "Add to Home Screen"',
+      step2Desc: 'Scroll and tap "Add to Home Screen" option',
+      step3Title: 'Tap "Add"',
+      step3Desc: 'Tap the "Add" button in the top right corner to install',
+      note: 'Must use Safari browser. Chrome and other browsers on iOS do not support this feature.'
+    },
+    android: {
+      step1Title: 'Tap menu ⋮',
+      step1Desc: 'Tap the 3-dot menu (⋮) in the top right corner of Chrome',
+      step2Title: 'Select "Install app" or "Add to Home screen"',
+      step2Desc: 'Find and tap "Install app" or "Add to Home screen" option',
+      step3Title: 'Tap "Install"',
+      step3Desc: 'Tap the "Install" button to add the app to your device',
+      note: 'Recommended to use Chrome or Samsung Internet for the best experience.'
+    }
   }
 };

@@ -1,14 +1,17 @@
-import { Moon, Sun, Monitor, Type, Bell, RefreshCw, Globe } from 'lucide-react';
+import { useState } from 'react';
+import { Moon, Sun, Monitor, Type, Bell, RefreshCw, Globe, Smartphone, ChevronRight } from 'lucide-react';
 import { useStore } from '../../stores/useStore';
 import { useNotifications } from '../../hooks/useNotifications';
 import { useTranslation } from '../../hooks/useTranslation';
 import { LANGUAGES } from '../../utils/constants';
 import { Card, Toggle } from '../ui';
+import { InstallGuide } from './InstallGuide';
 
 export function SettingsPanel() {
   const { settings, updateSettings } = useStore();
   const { isSupported, toggleNotifications } = useNotifications();
   const { t, language, setLanguage } = useTranslation();
+  const [showInstallGuide, setShowInstallGuide] = useState(false);
 
   const themeOptions = [
     { id: 'light', labelKey: 'settings.themeLight', icon: Sun },
@@ -205,6 +208,32 @@ export function SettingsPanel() {
         </Card>
       </section>
 
+      {/* Install App */}
+      <section>
+        <h2 className="text-sm font-semibold text-secondary-light dark:text-secondary-dark uppercase tracking-wider mb-3">
+          {t('install.settingsTitle')}
+        </h2>
+        <Card className="p-0 overflow-hidden">
+          <button
+            onClick={() => setShowInstallGuide(true)}
+            className="w-full p-4 flex items-center gap-3 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors text-left"
+          >
+            <div className="w-10 h-10 bg-accent-light/10 dark:bg-accent-dark/10 rounded-lg flex items-center justify-center flex-shrink-0">
+              <Smartphone size={20} className="text-accent-light dark:text-accent-dark" />
+            </div>
+            <div className="flex-1 min-w-0">
+              <p className="font-medium text-primary-light dark:text-primary-dark text-sm">
+                {t('install.howTo')}
+              </p>
+              <p className="text-xs text-secondary-light dark:text-secondary-dark mt-0.5">
+                {t('install.settingsDesc')}
+              </p>
+            </div>
+            <ChevronRight size={20} className="text-secondary-light dark:text-secondary-dark flex-shrink-0" />
+          </button>
+        </Card>
+      </section>
+
       {/* About */}
       <section>
         <h2 className="text-sm font-semibold text-secondary-light dark:text-secondary-dark uppercase tracking-wider mb-3">
@@ -224,6 +253,9 @@ export function SettingsPanel() {
           </div>
         </Card>
       </section>
+
+      {/* Install Guide Modal */}
+      <InstallGuide isOpen={showInstallGuide} onClose={() => setShowInstallGuide(false)} />
     </div>
   );
 }

@@ -151,5 +151,37 @@ export const th = {
     delete: 'ลบ',
     confirm: 'ยืนยัน',
     close: 'ปิด'
+  },
+
+  // Install Guide
+  install: {
+    title: 'ติดตั้ง TechNews',
+    description: 'เพิ่มลงหน้าจอหลักเพื่อเข้าถึงได้เร็วขึ้น',
+    howTo: 'วิธีติดตั้ง',
+    later: 'ไว้ทีหลัง',
+    guideTitle: 'วิธีติดตั้งแอป',
+    guideSubtitle: 'เพิ่มลง Home Screen',
+    alreadyInstalled: 'ติดตั้งแอปแล้ว!',
+    gotIt: 'เข้าใจแล้ว',
+    settingsTitle: 'ติดตั้งแอป',
+    settingsDesc: 'เพิ่มไอคอนลงหน้าจอหลัก',
+    ios: {
+      step1Title: 'กดปุ่ม Share',
+      step1Desc: 'กดปุ่ม Share (ไอคอนสี่เหลี่ยมมีลูกศรชี้ขึ้น) ที่ด้านล่างของ Safari',
+      step2Title: 'เลือก "Add to Home Screen"',
+      step2Desc: 'เลื่อนหาเมนู "Add to Home Screen" หรือ "เพิ่มไปยังหน้าจอโฮม"',
+      step3Title: 'กด "Add"',
+      step3Desc: 'กดปุ่ม "Add" หรือ "เพิ่ม" ที่มุมขวาบน เพื่อติดตั้งแอป',
+      note: 'ต้องใช้ Safari เท่านั้น ไม่รองรับ Chrome หรือเบราว์เซอร์อื่นบน iOS'
+    },
+    android: {
+      step1Title: 'กดเมนู ⋮',
+      step1Desc: 'กดปุ่มเมนู 3 จุด (⋮) ที่มุมขวาบนของ Chrome',
+      step2Title: 'เลือก "Install app" หรือ "Add to Home screen"',
+      step2Desc: 'เลื่อนหาเมนู "Install app" หรือ "Add to Home screen"',
+      step3Title: 'กด "Install"',
+      step3Desc: 'กดปุ่ม "Install" เพื่อติดตั้งแอปลงเครื่อง',
+      note: 'แนะนำให้ใช้ Chrome หรือ Samsung Internet เพื่อประสบการณ์ที่ดีที่สุด'
+    }
   }
 };

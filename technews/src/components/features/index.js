@@ -10,3 +10,5 @@ export { AddFeedModal } from './AddFeedModal';
 export { SettingsPanel } from './SettingsPanel';
 export { EmptyState } from './EmptyState';
 export { ErrorState } from './ErrorState';
+export { InstallBanner } from './InstallBanner';
+export { InstallGuide } from './InstallGuide';

@@ -17,7 +17,8 @@ export const STORAGE_KEYS = {
   FEEDS: 'technews-feeds',
   SETTINGS: 'technews-settings',
   CACHE: 'technews-cache',
-  BOOKMARKS: 'technews-bookmarks'
+  BOOKMARKS: 'technews-bookmarks',
+  INSTALL_BANNER_DISMISSED: 'technews-install-banner-dismissed'
 };
 
 // Cache duration in milliseconds (15 minutes)
