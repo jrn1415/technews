@@ -59,9 +59,9 @@ export function ReaderView() {
   };
 
   const handleOpenExternal = () => {
-    // Open via Google Translate (source: auto-detect, target: Thai)
-    // User sees original language first, can click to translate to Thai
-    const translateUrl = `https://translate.google.com/translate?sl=auto&tl=th&u=${encodeURIComponent(selectedArticle.link)}`;
+    // Open via Google Translate without auto-translate
+    // Shows original language, user can manually translate if needed
+    const translateUrl = `https://translate.google.com/translate?u=${encodeURIComponent(selectedArticle.link)}`;
     window.open(translateUrl, '_blank', 'noopener,noreferrer');
   };
 
@@ -198,7 +198,7 @@ export function ReaderView() {
         {/* Read more link */}
         <div className="mt-8 pt-6 border-t border-border-light dark:border-border-dark">
           <a
-            href={`https://translate.google.com/translate?sl=auto&tl=th&u=${encodeURIComponent(selectedArticle.link)}`}
+            href={`https://translate.google.com/translate?u=${encodeURIComponent(selectedArticle.link)}`}
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center gap-2 text-accent-light dark:text-accent-dark hover:underline font-medium"
