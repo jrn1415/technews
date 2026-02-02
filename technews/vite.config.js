@@ -12,7 +12,7 @@ export default defineConfig({
         name: 'TechNews',
         short_name: 'TechNews',
         description: 'Your daily tech digest - RSS Reader for IT, AI, and Security news',
-        theme_color: '#F97316',
+        theme_color: '#3B82F6',
         background_color: '#FAFAFA',
         display: 'standalone',
         start_url: '/',
