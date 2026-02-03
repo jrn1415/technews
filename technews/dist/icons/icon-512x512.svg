@@ -6,5 +6,8 @@
     </linearGradient>
   </defs>
   <rect width="512" height="512" rx="102" fill="url(#grad)"/>
-  <text x="256" y="340" font-family="Georgia, serif" font-size="280" font-weight="bold" fill="white" text-anchor="middle">T</text>
+  <!-- Letter T -->
+  <text x="280" y="340" font-family="Georgia, serif" font-size="280" font-weight="bold" fill="white" text-anchor="middle">T</text>
+  <!-- Lightning Bolt -->
+  <polygon points="200,80 140,220 190,220 150,320 240,160 185,160" fill="#FACC15"/>
 </svg>
